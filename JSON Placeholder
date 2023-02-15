@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "098f6bcc-a341-472c-b44e-09f176bf51a4",
+		"name": "JSON Placeholder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25822820"
+	},
+	"item": [
+		{
+			"name": "GET Posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/posts?title_like=sunt",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "body",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "title",
+							"value": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+							"disabled": true
+						},
+						{
+							"key": "title_like",
+							"value": "sunt"
+						},
+						{
+							"key": "id",
+							"value": "7",
+							"disabled": true
+						},
+						{
+							"key": "userId",
+							"value": "7",
+							"disabled": true
+						},
+						{
+							"key": "_limit",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify response status code\", () => {\r",
+							"    //console.log(pm.response)\r",
+							"    //console.log(pm.response.code)\r",
+							"    //console.log(pm.response.responseTime)\r",
+							"    //pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202])\r",
+							"    pm.expect(pm.response.code).to.be.a(\"number\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify response time\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.lessThan(990)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify status text\", () => {\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\")\r",
+							"    pm.expect(pm.response.status).to.be.a(\"string\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify post id\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    //console.log(responseBody[0]);\r",
+							"    //console.log(responseBody[0].id);\r",
+							"    //console.log(responseBody[0].name);\r",
+							"    pm.expect(responseBody[0].id).to.eql(6);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify lenght of name\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody[0].name).to.have.lengthOf(54)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify response e-mail\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody[0].email).to.include(\"@\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify all response e-mail\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    responseBody.map(obiekt => {\r",
+							"        //console.log(obiekt.email)\r",
+							"        pm.expect(obiekt.email).to.include(\"@\");\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify header\", () =>{\r",
+							"    pm.response.to.have.header(\"CF-RAY\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify header\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-Encoding\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify headers value\", () => {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/comments?postId=2&postId=5&_limit=3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "2"
+						},
+						{
+							"key": "postId",
+							"value": "5"
+						},
+						{
+							"key": "_limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202])\r",
+							"});\r",
+							"/*\r",
+							"pm.test(\"Test globalny\", () => {\r",
+							"    //console.log(pm.globals.get(\"postTitle\"));\r",
+							"    const expectedTitle = pm.globals.get(\"postTitle\");\r",
+							"    const resBody = pm.response.json();\r",
+							"    pm.expect(resBody.title).to.eql(expectedTitle);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Kolekcja\", () => {\r",
+							"    const expectedURL = pm.collectionVariables.get(\"baseURL\")\r",
+							"    //console.log(expectedURL);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Ze zmiennych środowiskowych\", () => {\r",
+							"    const expectedUsername = pm.environment.get(\"username\")\r",
+							"    console.log(expectedUsername);\r",
+							"})\r",
+							"*/\r",
+							"/*\r",
+							"pm.test(\"Ustawienie zmiennej\", () => {\r",
+							"    //pm.globals.set(\"samochód\", \"Volksvagen\")\r",
+							"    //pm.collectionVariables.set(\"samochód\", \"Opel\")\r",
+							"    //pm.environment.set(\"samochód\", \"Iveco\")\r",
+							"    //pm.globals.unset(\"samochód\")\r",
+							"},)*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": {{userID}},\r\n    \"id\": 1625,\r\n    \"title\": \"{{postTitle}}\",\r\n    \"body\": \"{{desc}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/posts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generatorEmail() {\r",
+							"    const randomNumbers = Math.floor(Math.random() * (1000000 - 1) + 1); //losowanie liczby całkowitej\r",
+							"    const randomEmail = \"test\" + randomNumbers + \"@example.com\";\r",
+							"    pm.globals.set(\"randomEmail\", randomEmail);  // ustawienie zmiennej globalnej - losowego emaila - globalna zmienna z kolei ustawi go do body\r",
+							"}\r",
+							"\r",
+							"generatorEmail()"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Ervin Howell\",\r\n    \"username\": \"{{username}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"address\": {\r\n        \"street\": \"Victor Plains\",\r\n        \"suite\": \"Suite 879\",\r\n        \"city\": \"Wisokyburgh\",\r\n        \"zipcode\": \"90566-7771\",\r\n        \"geo\": {\r\n            \"lat\": \"-43.9509\",\r\n            \"lng\": \"-34.4618\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://jsonplaceholder.typicode.com",
+			"type": "string"
+		},
+		{
+			"key": "samochód",
+			"value": ""
+		}
+	]
+}
