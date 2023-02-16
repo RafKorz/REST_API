@@ -1,0 +1,951 @@
+{
+	"info": {
+		"_postman_id": "dcbbac48-0a5f-412a-8d9a-26a0ef3e7866",
+		"name": "Jagiellonowie",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25822820"
+	},
+	"item": [
+		{
+			"name": "Stworzenie tablicy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody; //const nie może być przed blokami to uzywamy let - bo chcemy nadpisać żeby sie poniżej odwoływać do niej\r",
+							"\r",
+							"pm.test(\"Verify status code\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"    console.log(resBody);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify created board name\", () => {\r",
+							"    pm.expect(resBody.name).to.eql(pm.collectionVariables.get(\"boardName\"));\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify response id\", () => {\r",
+							"    pm.expect(resBody.id.length).to.greaterThan(10);\r",
+							"    pm.collectionVariables.set(\"boardID\", resBody.id)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/?key={{key}}&token={{token}}&name={{boardName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{boardName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pobranie tablicy jagiellońskiej",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						"{{boardID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stworzenie listy jagiellońskiej",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify list name\", () => {\r",
+							"    pm.expect(resBody.name).to.eql(pm.collectionVariables.get(\"listName\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"listID\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/{{boardID}}/lists?key={{key}}&token={{token}}&name={{listName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						"{{boardID}}",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{listName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Spis list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/{{boardID}}/lists?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						"{{boardID}}",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Władysława Jagiełły",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID1\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName1}}&desc={{desc1}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName1}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Władysława Warneńczyka",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID2\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName2}}&desc={{desc2}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName2}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc2}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Kazimierza Jagiellońcvzyka",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID3\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName3}}&desc={{desc3}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName3}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc3}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Jana Olbrachta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID4\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName4}}&desc={{desc4}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName4}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc4}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Aleksandra Jagiellończyka",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID5\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName5}}&desc={{desc5}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName5}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc5}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Zygmunta Starego",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID6\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName6}}&desc={{desc6}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName6}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc6}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Karta Zygmunta Augusta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify value list and id board\", () => {\r",
+							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
+							"    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get(\"boardID\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"cardID7\", resBody.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cards?idList={{listID}}&key={{key}}&token={{token}}&name={{cardName7}}&desc={{desc7}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{listID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{cardName7}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{desc7}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Spis kart w liście jagiellońskiej",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Verify status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify type of name, shortLink, description\", () => {    // zapytanie czy każdy zwrócone obiekty posiadają name o wartosci typu string\r",
+							"    resBody.map(item => {\r",
+							"        pm.expect(item.name).to.be.a(\"string\");\r",
+							"        pm.expect(item.shortLink).to.be.a(\"string\");\r",
+							"        pm.expect(item.desc).to.be.a(\"string\");\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify closed value\", () => {\r",
+							"    resBody.map(item => {\r",
+							"        pm.expect(item.closed).to.eql(false);\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/{{boardID}}/cards?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						"{{boardID}}",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Aktualizacja listy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/lists/{{listID}}?key={{key}}&token={{token}}&name={{updateListName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"lists",
+						"{{listID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{updateListName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usunięcie tablicy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/boards/63ee36788c38a2ae12d2aec5?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"boards",
+						"63ee36788c38a2ae12d2aec5"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://api.trello.com/1",
+			"type": "string"
+		},
+		{
+			"key": "boardName",
+			"value": "Jagiellonowie na polskim tronie",
+			"type": "string"
+		},
+		{
+			"key": "boardID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "listName",
+			"value": "Lista Jagiellonów",
+			"type": "string"
+		},
+		{
+			"key": "listID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cardName1",
+			"value": "Władysław Jagiełło",
+			"type": "string"
+		},
+		{
+			"key": "cardID1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc1",
+			"value": "1385-1434",
+			"type": "string"
+		},
+		{
+			"key": "cardName2",
+			"value": "Władysław Warneńczyk",
+			"type": "string"
+		},
+		{
+			"key": "cardID2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc2",
+			"value": "1434-1444",
+			"type": "string"
+		},
+		{
+			"key": "cardName3",
+			"value": "Kazimierz Jagiellończyk",
+			"type": "string"
+		},
+		{
+			"key": "cardID3",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc3",
+			"value": "1447-1492",
+			"type": "string"
+		},
+		{
+			"key": "cardName4",
+			"value": "Jan Olbracht",
+			"type": "string"
+		},
+		{
+			"key": "cardID4",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc4",
+			"value": "1492-1501",
+			"type": "string"
+		},
+		{
+			"key": "cardName5",
+			"value": "Aleksander Jagiellończyk",
+			"type": "string"
+		},
+		{
+			"key": "cardID5",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc5",
+			"value": "1501-1506",
+			"type": "string"
+		},
+		{
+			"key": "cardName6",
+			"value": "Zygmunt Stary",
+			"type": "string"
+		},
+		{
+			"key": "cardID6",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc6",
+			"value": "1506-1548",
+			"type": "string"
+		},
+		{
+			"key": "cardName7",
+			"value": "Zygmunt August",
+			"type": "string"
+		},
+		{
+			"key": "cardID7",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc7",
+			"value": "1548-1572",
+			"type": "string"
+		},
+		{
+			"key": "updateListName",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
