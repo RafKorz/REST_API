@@ -412,13 +412,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/boards/63eb2febe7e9a4583742bf59/lists?key={{key}}&token={{token}}",
+					"raw": "{{baseURL}}/boards/{{boardID}}/lists?key={{key}}&token={{token}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"boards",
-						"63eb2febe7e9a4583742bf59",
+						"{{boardID}}",
 						"lists"
 					],
 					"query": [
@@ -506,16 +506,16 @@
 							"    pm.response.to.have.status(200);\r",
 							"    resBody = pm.response.json();\r",
 							"});\r",
-							"\r",
+							"/*\r",
 							"pm.test(\"Verify shortLink\", () => {\r",
-							"    pm.expect(resBody.idShort).not.to.be.a(\"string\"); \r",
+							"    pm.expect(resBody.name).to.be.a(\"string\"); \r",
 							"})\r",
 							"\r",
 							"pm.test(\"Verify value list and id board\", () => {\r",
 							"    pm.expect(resBody.idList).not.to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
 							"    pm.expect(resBody.idBoard).not.to.eql(pm.collectionVariables.get(\"boardID\"));\r",
 							"})\r",
-							"\r",
+							"*/\r",
 							"/*\r",
 							"pm.test(\"Verify value list\", () => {\r",
 							"    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get(\"listID\")); // asercja\r",
@@ -528,8 +528,10 @@
 							"pm.test(\"Verify type of name\", () => {    // zapytanie czy każdy zwrócone obiekty posiadają name o wartosci typu string\r",
 							"    resBody.map(item => {\r",
 							"        pm.expect(item.name).to.be.a(\"string\");\r",
+							"        pm.expect(item.shortLink).to.be.a(\"string\");\r",
 							"    })\r",
-							"})"
+							"})\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -829,6 +831,56 @@
 			]
 		},
 		{
+			"name": "Aktualizacja listy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Verify status code 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/lists/{{listID}}?key={{key}}&token={{token}}&name={{listName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"lists",
+						"{{listID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{listName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Aktualizacja karty",
 			"event": [
 				{
@@ -858,7 +910,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/cards/{{cardID}}?key={{key}}&token={{token}}&name={{updateCardName}}&desc={{updateCardDesc}}",
+					"raw": "{{baseURL}}/cards/{{cardID}}?key={{key}}&token={{token}}&name={{updateCardName}}&desc={{desc}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -881,7 +933,7 @@
 						},
 						{
 							"key": "desc",
-							"value": "{{updateCardDesc}}"
+							"value": "{{desc}}"
 						}
 					]
 				}
@@ -1054,6 +1106,11 @@
 		},
 		{
 			"key": "cardName2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "listID2",
 			"value": "",
 			"type": "string"
 		}
