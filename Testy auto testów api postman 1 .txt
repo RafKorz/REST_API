@@ -1,0 +1,184 @@
+pm.test("Verify response status code", () => {
+    //console.log(pm.response)
+    //console.log(pm.response.code)
+    //console.log(pm.response.responseTime)
+    //pm.response.to.have.status(200);
+    pm.expect(pm.response.code).to.eql(200)
+    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202])
+    pm.expect(pm.response.code).to.be.a("number")
+})
+
+pm.test("Verify response time", () => {
+    pm.expect(pm.response.responseTime).to.lessThan(990)
+})
+
+pm.test("Verify status text", () => {
+    pm.expect(pm.response.status).to.eql("OK")
+    pm.expect(pm.response.status).to.be.a("string")
+})
+
+pm.test("Verify post id", () => {
+    const responseBody = pm.response.json();
+    //console.log(responseBody[0]);
+    //console.log(responseBody[0].id);
+    //console.log(responseBody[0].name);
+    pm.expect(responseBody[0].id).to.eql(6);
+})
+
+pm.test("Verify lenght of name", () => {
+    const responseBody = pm.response.json();
+    pm.expect(responseBody[0].name).to.have.lengthOf(54)
+})
+
+pm.test("Verify response e-mail", () => {
+    const responseBody = pm.response.json();
+    pm.expect(responseBody[0].email).to.include("@");
+})
+
+pm.test("Verify all response e-mail", () => {
+    const responseBody = pm.response.json();
+    responseBody.map(obiekt => {
+        //console.log(obiekt.email)
+        pm.expect(obiekt.email).to.include("@");
+    })
+})
+
+pm.test("Verify header", () =>{
+    pm.response.to.have.header("CF-RAY");
+})
+
+pm.test("Verify header", () =>{
+    pm.response.to.have.header("Content-Encoding");
+})
+
+pm.test("Verify headers value", () => {
+    pm.expect(pm.response.headers.get("Content-Type")).to.eql("application/json; charset=utf-8");
+})
+
+pm.test("Status code is 201", function () {
+    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202])
+});
+/*
+pm.test("Test globalny", () => {
+    //console.log(pm.globals.get("postTitle"));
+    const expectedTitle = pm.globals.get("postTitle");
+    const resBody = pm.response.json();
+    pm.expect(resBody.title).to.eql(expectedTitle);
+})
+
+pm.test("Kolekcja", () => {
+    const expectedURL = pm.collectionVariables.get("baseURL")
+    //console.log(expectedURL);
+})
+
+pm.test("Ze zmiennych środowiskowych", () => {
+    const expectedUsername = pm.environment.get("username")
+    console.log(expectedUsername);
+})
+*/
+/*
+pm.test("Ustawienie zmiennej", () => {
+    //pm.globals.set("samochód", "Volksvagen")
+    //pm.collectionVariables.set("samochód", "Opel")
+    //pm.environment.set("samochód", "Iveco")
+    //pm.globals.unset("samochód")
+},)*/
+
+-------------------------------------------------------
+pm.test("Should verify response status code", () => {
+    //console.log(pm.response)
+    console.log(pm.response.code)
+    //console.log(pm.response.responseTime)
+   // pm.response.to.have.status(200);
+   pm.expect(pm.response.code).to.eql(200)
+   pm.expect(pm.response.code).to.be.oneOf([200, 404])
+    })
+
+pm.test("Should verify response time", () => {
+    console.log(pm.response.responseTime)
+    pm.expect(pm.response.responseTime).to.lessThan(120)
+})
+
+pm.test("Should verify response size", () => {
+    console.log(pm.response.responseSize)
+    pm.expect(pm.response.responseSize).to.lessThan(2500)
+})
+
+pm.test("Should verify post id", () => {
+    const responseBody = pm.response.json();
+    console.log(responseBody[0].id);
+    pm.expect(responseBody[0].id).to.eql(1);
+})
+
+pm.test("Should verify length of title", () => {
+    const responseBody = pm.response.json();
+    console.log(responseBody[1].title);
+    pm.expect(responseBody[1].title).to.have.lengthOf(38);
+})
+
+pm.test("Should verify response have letter", () => {
+    const responseBody = pm.response.json();
+    pm.expect(responseBody[1].title).to.include("c");
+})
+
+pm.test("Should verify all response letter", () => {
+    const responseBody = pm.response.json();
+    responseBody.map(obiekt => {
+        pm.expect(obiekt.title).to.include("a");
+    })     
+})
+
+pm.test("Should verify content type response", () => {
+    pm.response.to.have.header("Content-Type");
+})
+
+pm.test("Should verify connection type response", () => {
+    pm.response.to.have.header("Connection");
+})
+
+pm.test("Should verify content type value", () => {
+    pm.expect(pm.response.headers.get("Content-Type")).to.eq("application/json; charset=utf-8");
+})
+
+pm.test("Global", () => {
+    //console.log(pm.globals.get("postTitle"));
+    const expectedTitle = pm.globals.get("postTitle");
+    //console.log("Z testu: " + expectedTitle)
+    const resBody = pm.response.json();
+    pm.expect(resBody.title).not.to.eql(expectedTitle)
+})
+
+pm.test("Collection", () => {
+    const expectedUrl = pm.collectionVariables.get("baseURL")
+    console.log(expectedUrl);
+})
+
+pm.test("Environment", () => {
+    const expectedUserName = pm.environment.get("username")
+    console.log(expectedUserName)
+})
+/*
+pm.test("Set Global", () => {
+    pm.globals.set("samochód", "Ford")   // analogicznie ustawia się zmienne środowiskowe i lokalne
+})  */
+/*
+pm.test("Set Global", () => {
+    pm.globals.unset("samochód", "Ford")   // analogicznie usuwa się zmienne środowiskowe i lokalne
+})  */
+
+/*
+pm.test("Should verify response status code", () => {
+    //console.log(pm.response)
+    pm.response.to.have.status(200);
+    })*/
+
+-----------------------------------------------------------------
+PRE-REQUEST
+
+function generatorEmail() {
+    const randomNumbers = Math.floor(Math.random() * (1000000 - 1) + 1); //losowanie liczby całkowitej
+    const randomEmail = "test" + randomNumbers + "@example.com";
+    pm.globals.set("randomEmail", randomEmail);  // ustawienie zmiennej globalnej - losowego emaila - globalna zmienna z kolei ustawi go do body
+}
+
+generatorEmail()

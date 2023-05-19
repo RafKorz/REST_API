@@ -1,0 +1,92 @@
+let resBody; //const nie może być przed blokami to uzywamy let - bo chcemy nadpisać żeby sie poniżej odwoływać do niej
+
+pm.test("Verify status code", () => {
+    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);
+    resBody = pm.response.json();
+    console.log(resBody);
+})
+
+pm.test("Verify created board name", () => {
+    pm.expect(resBody.name).to.eql(pm.collectionVariables.get("boardName"));
+})
+
+pm.test("Verify response id", () => {
+    pm.expect(resBody.id.length).to.greaterThan(10);
+    pm.collectionVariables.set("boardID", resBody.id)
+})
+
+let resBody;
+
+pm.test("Status code is 200", () => {
+    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);
+    resBody = pm.response.json();
+});
+
+pm.test("Verify list name", () => {
+    pm.expect(resBody.name).to.eql(pm.collectionVariables.get("listName"));
+})
+
+pm.collectionVariables.set("listID", resBody.id);
+
+let resBody;
+
+pm.test("Verify status code is 200", () => {
+    pm.response.to.have.status(200);
+    resBody = pm.response.json();
+});
+
+pm.test("Verify type of name, shortLink, description", () => {    // zapytanie czy każdy zwrócone obiekty posiadają name o wartosci typu string
+    resBody.map(item => {
+        pm.expect(item.name).to.be.a("string");
+        pm.expect(item.shortLink).to.be.a("string");
+        pm.expect(item.desc).to.be.a("string");
+    })
+})
+
+pm.test("Verify type of name", () => {    // zapytanie czy każdy zwrócone obiekty posiadają name o wartosci typu string
+    resBody.map(item => {
+        pm.expect(item.name).to.be.a("string");
+    })
+})
+
+let resBody;
+
+pm.test("Verify status code is 200", () => {
+    pm.response.to.have.status(200);
+    resBody = pm.response.json();
+});
+/*
+pm.test("Verify shortLink", () => {
+    pm.expect(resBody.name).to.be.a("string"); 
+})
+
+pm.test("Verify value list and id board", () => {
+    pm.expect(resBody.idList).not.to.eql(pm.collectionVariables.get("listID")); // asercja
+    pm.expect(resBody.idBoard).not.to.eql(pm.collectionVariables.get("boardID"));
+})
+*/
+/*
+pm.test("Verify value list", () => {
+    pm.expect(resBody.idList).to.eql(pm.collectionVariables.get("listID")); // asercja
+})  
+
+pm.test("Verify value board", () => {
+    pm.expect(resBody.idBoard).to.eql(pm.collectionVariables.get("boardID"));
+}) */
+
+pm.test("Verify type of name", () => {    // zapytanie czy każdy zwrócone obiekty posiadają name o wartosci typu string
+    resBody.map(item => {
+        pm.expect(item.name).to.be.a("string");
+        pm.expect(item.shortLink).to.be.a("string");
+    })
+})
+
+pm.test("Verify update of name", () => {
+    pm.expect(resBody.name).to.eql(pm.collectionVariables.get("updatedBoardName"));
+})
+
+pm.test("Verify closed value", () => {
+    resBody.map(item => {
+        pm.expect(item.closed).to.eql(false);
+    })
+})
